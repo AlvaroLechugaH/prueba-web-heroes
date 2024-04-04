@@ -1,0 +1,22 @@
+<div class="container p-2">
+    <input type="search" name="heroe-search" id="heroe-search" placeholder="Buscar héroe"
+        class="w-full rounded-md py-1.5 ps-1.5 ring-2 ring-inset ring-gray-300" [(ngModel)]="searchText"
+        [disabled]="loading" (ngModelChange)="filtrarListadoHeroe()">
+
+    <div class="button-new">
+        <button class="flex w-full justify-center rounded-md bg-indigo-600 py-1.5 leading-6 text-white shadow-sm"
+            (click)="clickNewHeroe()" [disabled]="loading">Nuevo heroe</button>
+    </div>
+
+    @if (loading) {
+    <div class="loading">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    } @else {
+    <div class="heroe-list">
+        @for (heroe of heroes; track $index) {
+        <heroe-item [heroe]="heroe" (modifyHeroe)="editHeroe($event)" (deleteHeroe)="deleteHeroe($event)"></heroe-item>
+        }
+    </div>
+    }
+</div>
