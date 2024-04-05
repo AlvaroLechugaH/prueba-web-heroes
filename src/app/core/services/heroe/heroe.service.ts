@@ -47,13 +47,13 @@ export class HeroeService {
     return of(!existeHeroe);
   }
 
-  public borrarHeroe(id: number): Observable<boolean> {
+  public borrarHeroe(id: number): Observable<number> {
     const indiceHeroe = this.listadoHeroes.findIndex(heroe => heroe.id === id);
     if (indiceHeroe !== -1) {
       this.listadoHeroes.splice(indiceHeroe, 1);
     }
 
-    return of(indiceHeroe !== -1);
+    return of(indiceHeroe);
   }
 
   private generarId(): number {

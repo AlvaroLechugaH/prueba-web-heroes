@@ -5,6 +5,14 @@ import { Router } from '@angular/router';
 import { HeroeService } from '../../core/services/heroe/heroe.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+} from '@angular/material/dialog';
+import { HeroeDeleteComponent } from '../../shared/components/heroe-delete/heroe-delete.component';
+import { NotificationService } from '../../core/services/notifications/notification.service';
 
 @Component({
   selector: 'app-heroe-list',
@@ -22,7 +30,9 @@ export class HeroeListComponent implements OnInit {
   public allHeroes: Heroe[] = [];
 
   constructor(
+    public dialog: MatDialog,
     private _heroeService: HeroeService,
+    private _notificationService: NotificationService,
     private _router: Router
   ) { }
 
@@ -57,7 +67,20 @@ export class HeroeListComponent implements OnInit {
   }
 
   public deleteHeroe(id: number): void {
-
+    const alert = this.dialog.open(HeroeDeleteComponent);
+    alert.afterClosed().subscribe({
+      next: (eliminar: boolean) => {
+        if (eliminar) {
+          this._heroeService.borrarHeroe(id).subscribe({
+            next: (index: number) => {
+              const mensaje = index === -1 ? 'No se ha encontrado héroe con ese id' : 'Se ha eliminado el héroe correctamente';
+              const color = index === -1 ? 'danger' : 'primary';
+              this._notificationService.showMessage(mensaje, color)
+            }
+          });
+        }
+      }
+    })
   }
 
 }
