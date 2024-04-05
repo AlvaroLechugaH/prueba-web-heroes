@@ -12,6 +12,7 @@ h2 {
 
 input[type=text] {
     color: white;
+    text-transform: uppercase;
 }
 
 button:disabled {
